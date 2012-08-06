@@ -25,7 +25,7 @@
             { center: new google.maps.LatLng(55.95120833, -3.18709307), size: 89 },
             { center: new google.maps.LatLng(55.9518701, -3.1779223), size: 50 },
             { center: new google.maps.LatLng(55.94824173, -3.19018575), size: 60 },
-            { center: new google.maps.LatLng(55.94638417, -3.19077185), size: 3039 },
+            { center: new google.maps.LatLng(55.94638417, -3.19077185), size: 300 },
             { center: new google.maps.LatLng(55.94891852, -3.18731461), size: 55 },
             { center: new google.maps.LatLng(55.94872598, -3.18666658), size: 120 },
             { center: new google.maps.LatLng(55.94601829, -3.18841025), size: 180 },
@@ -56,8 +56,9 @@
             map: map,
             center: citymap[city].center,
             radius: citymap[city].size
-        };
-        cityCircle = new google.maps.Circle(circleOptions);
+          };
+          cityCircle = new google.maps.Circle(circleOptions);
+        }
       }
     </script>
   </head>
