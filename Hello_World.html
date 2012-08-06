@@ -4,11 +4,11 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
       html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
+      body { height: 100%; margin: 10; padding: 10 }
       #map_canvas { height: 100% }
     </style>
     <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?libraries=visualizationkey=AIzaSyDvtpsuz7tpwE1kVzkdJiaNjFdLxqy02yo&sensor=true">
+      src="http://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyDvtpsuz7tpwE1kVzkdJiaNjFdLxqy02yo&sensor=true">
     </script>
     <script type="text/javascript">
       function initialize() {
@@ -19,15 +19,45 @@
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
-        var heatMapData = [
-          {location: new google.maps.LatLng(55.945535, -3.188589), weight: 2},
-          {location: new google.maps.LatLng(37.782, -122.441), weight: 3}
-          ];
-        var heatmap = new google.maps.visualization.HeatmapLayer({
-          data: heatMapData,
-          radius: 20
-        });
-        heatmap.setmap(map);
+        var citymap = [{ center: new google.maps.LatLng(55.94512074, -3.18861172), size: 100 },
+            { center: new google.maps.LatLng(55.95082799, -3.18242108), size: 75 },
+            { center: new google.maps.LatLng(55.94454248, -3.18527455), size: 150 },
+            { center: new google.maps.LatLng(55.95120833, -3.18709307), size: 89 },
+            { center: new google.maps.LatLng(55.9518701, -3.1779223), size: 50 },
+            { center: new google.maps.LatLng(55.94824173, -3.19018575), size: 60 },
+            { center: new google.maps.LatLng(55.94638417, -3.19077185), size: 3039 },
+            { center: new google.maps.LatLng(55.94891852, -3.18731461), size: 55 },
+            { center: new google.maps.LatLng(55.94872598, -3.18666658), size: 120 },
+            { center: new google.maps.LatLng(55.94601829, -3.18841025), size: 180 },
+            { center: new google.maps.LatLng(55.94774499, -3.1819297), size: 149 },
+            { center: new google.maps.LatLng(55.95715832, -3.18194706), size: 50 },
+            { center: new google.maps.LatLng(55.94870031, -3.19449745), size: 80 },
+            { center: new google.maps.LatLng(55.95388174, -3.19577041), size: 300 },
+            { center: new google.maps.LatLng(55.9518701, -3.1779223), size: 50 },
+            { center: new google.maps.LatLng(55.94667898, -3.18554181), size: 41 },
+            { center: new google.maps.LatLng(0, 0), size: 80 },
+            { center: new google.maps.LatLng(55.94601829, -3.18841025), size: 175 },
+            { center: new google.maps.LatLng(55.94803921, -3.18715295), size: 150 },
+            { center: new google.maps.LatLng(55.94737341, -3.18517568), size: 80 },
+            { center: new google.maps.LatLng(55.94428981, -3.18549397), size: 100 },
+            { center: new google.maps.LatLng(55.95014964, -3.18685576), size: 55 },
+            { center: new google.maps.LatLng(55.94867185, -3.19315567), size: 40 },
+            { center: new google.maps.LatLng(55.94999556, -3.20679372), size: 240 },
+            { center: new google.maps.LatLng(55.9461639, -3.24074416), size: 240 }
+        ];
+        var cityCircle;
+        for (var city in citymap) {
+          var circleOptions = {
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: citymap[city].size
+        };
+        cityCircle = new google.maps.Circle(circleOptions);
       }
     </script>
   </head>
