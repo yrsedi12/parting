@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Project F</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 10; padding: 10 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyDvtpsuz7tpwE1kVzkdJiaNjFdLxqy02yo&sensor=true">
+    </script>
+    
+  </head>
+  <body>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript">
+  var date = new Date();
+  var allCircles = Array();
+
+  function sigmoid (time){
+    var scale = 0.2666666666666667 * time -4;
+    var y = Math.pow(2.71828, - scale);
+    var x = 1 / (1 + y);
+    return x;
+  }
+
+  function initialize() {
+    var centre = new google.maps.LatLng(55.945535, -3.188589);
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), {
+      zoom: 16,
+      center: centre,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    $.getJSON("http://projectf-data.eu01.aws.af.cm/?callback=?", function ( data ) {
+      setInterval(function(){
+        if(allCircles.length > 0){
+          deleteAllCircles(allCircles);
+        }
+        date = new Date();
+        drawAllCircles(data, map);
+      }, 3000);
+    });
+  }
+
+  function addCircle(center, radius, map){
+    var circleOptions = {
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 0,
+      fillColor: "#9E0508",
+      fillOpacity: 0.35,
+      center: center,
+      radius: radius
+    };
+    var circle = new google.maps.Circle(circleOptions);
+    allCircles.push(circle);
+    circle.setMap(map);
+  }
+
+  function drawAllCircles(data, map){
+
+    for(i=0;i<data.data.length;i++){
+      var tmpstart = new Date (data.data[i].start);
+      var tmpend = new Date (data.data[i].end);
+      //Sigmoid calcaulations
+      if (tmpstart > date){
+        x = tmpstart - date;
+        dif = new Date(1800000 - x);
+      }
+      else if (tmpend > date){
+        dif = new Date(0);
+      }
+      else{
+        x = date - tmpend ;
+        dif = new Date(1800000 - x);
+      }
+
+      center = new google.maps.LatLng(data.data[i].lat,data.data[i].lng);
+      radius = data.data[i].capacity * sigmoid(dif.getMinutes());
+
+      addCircle(center, radius, map);
+
+    }
+  }
+
+  function deleteAllCircles(circles){
+    for(i=0;i<circles.length;i++){
+      circles[i].setMap(null);
+    }
+    circles = [];
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize); 
+  </script>
+</html>
+
+
+
+
