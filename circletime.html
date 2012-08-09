@@ -51,7 +51,6 @@
   }
 
   function colourScale(capacity){
-    console.log(capacity);
     if (capacity <= 25){
       return '#FFF080'
     }
@@ -99,34 +98,23 @@
   function drawAllCircles(data, map){
 
     for(i=0;i<data.data.length;i++){
-      console.log("BEFORE:\t" + data.data[i].start + "\t" + data.data[i].end);
       var tmpstart = moment(data.data[i].start);
       var tmpend = moment(data.data[i].end);
-      console.log("DATE:\t" + date + "\t" + tmpstart + "\t" + tmpend);
       //Sigmoid calcaulations
       if (tmpstart > date){
         x = tmpstart - date;
         dif = moment(1800000 - x);
-        console.log("First: " + x + "\t" + dif);
       }
       else if (tmpend > date){
         dif = moment(0);
-        console.log("Second: " + dif);
       }
       else{
         x = date - tmpend;
         dif = moment(1800000 - x);
-        console.log("Third: " + x + "\t" + dif);
       }
       center = new google.maps.LatLng(data.data[i].lat,data.data[i].lng);
-      console.log("Capacity: " + data.data[i].capacity);
-      console.log("ActDif: " + dif);
-      console.log("Dif: " + dif.minutes());
-      console.log("Sigmoid: " + sigmoid(dif.minutes()));
-      console.log("Throttle: " + capacityThrottle(data.data[i].capacity));
 
       radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif.minutes());
-      console.log("Radius" + radius);
       fillColor = colourScale(parseInt(radius));
       addCircle(center, radius, map, fillColor);
     }
