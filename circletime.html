@@ -6,8 +6,15 @@
     <title>Project F</title>
     <style type="text/css">
       html { height: 100% }
-      body { height: 100%; margin: 10px; padding: 10px; }
+      body { height: 100%; margin: 0px; padding: 0px; }
+      #header { background:url("wood.png"); height: 200px; text-align: center; -moz-box-shadow: 2px 0 1px #888;
+-webkit-box-shadow: 2px 0 1px #888;
+box-shadow: 2px 0 1px #888; }
+      #logo { background:url("logo.png"); width: 435px; height: 123px; margin: 0 auto; }
+      #logo span { display: none; }
       #map_canvas { height: 100% }
+      #header h3, #header p, #header a { color: #efcc63; font-weight: normal; text-shadow: 0 1px 1px #000}
+      #header p { font-size: 18px; font-variant: small-caps; margin-top: -10px;}
     </style>
     <script src="moment.min.js"></script>
     <script type="text/javascript"
@@ -17,6 +24,8 @@
   </head>
 
   <body>
+    <div id="header"><div id="logo"><span>Ye Olde Fringe Dodger</span></div><h3>Avoid Edinburgh tourists by planning your route around busy shows (red circles).</h3>
+    <p><a href="#">how to use</a> &bull; <a href="mailto:a@projec.tf">feedback</a></p></div>
     <div id="map_canvas" style="width:100%; height:100%"></div>
   </body>
 
