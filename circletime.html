@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title>Project F</title>
     <style type="text/css">
       html { height: 100% }
-      body { height: 100%; margin: 10; padding: 10 }
+      body { height: 100%; margin: 10px; padding: 10px; }
       #map_canvas { height: 100% }
     </style>
+    <script src="moment.min.js"></script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyDvtpsuz7tpwE1kVzkdJiaNjFdLxqy02yo&sensor=true">
     </script>
@@ -18,7 +20,7 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript">
-  var date = new Date();
+  var date = moment();
   var allCircles = Array();
 
   function sigmoid (time){
@@ -42,7 +44,7 @@
         if(allCircles.length > 0){
           deleteAllCircles(allCircles);
         }
-        date = new Date();
+        date = moment();
         drawAllCircles(data, map);
       }, 3000);
     });
@@ -97,22 +99,34 @@
   function drawAllCircles(data, map){
 
     for(i=0;i<data.data.length;i++){
-      var tmpstart = new Date (data.data[i].start);
-      var tmpend = new Date (data.data[i].end);
+      console.log("BEFORE:\t" + data.data[i].start + "\t" + data.data[i].end);
+      var tmpstart = moment(data.data[i].start);
+      var tmpend = moment(data.data[i].end);
+      console.log("DATE:\t" + date + "\t" + tmpstart + "\t" + tmpend);
       //Sigmoid calcaulations
       if (tmpstart > date){
         x = tmpstart - date;
-        dif = new Date(1800000 - x);
+        dif = moment(1800000 - x);
+        console.log("First: " + x + "\t" + dif);
       }
       else if (tmpend > date){
-        dif = new Date(0);
+        dif = moment(0);
+        console.log("Second: " + dif);
       }
       else{
-        x = date - tmpend ;
-        dif = new Date(1800000 - x);
+        x = date - tmpend;
+        dif = moment(1800000 - x);
+        console.log("Third: " + x + "\t" + dif);
       }
       center = new google.maps.LatLng(data.data[i].lat,data.data[i].lng);
-      radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif.getMinutes());
+      console.log("Capacity: " + data.data[i].capacity);
+      console.log("ActDif: " + dif);
+      console.log("Dif: " + dif.minutes());
+      console.log("Sigmoid: " + sigmoid(dif.minutes()));
+      console.log("Throttle: " + capacityThrottle(data.data[i].capacity));
+
+      radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif.minutes());
+      console.log("Radius" + radius);
       fillColor = colourScale(parseInt(radius));
       addCircle(center, radius, map, fillColor);
     }
