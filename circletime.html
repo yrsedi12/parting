@@ -16,7 +16,6 @@
   <body>
     <div id="map_canvas" style="width:100%; height:100%"></div>
   </body>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript">
   var date = new Date();
@@ -49,19 +48,50 @@
     });
   }
 
+  function colourScale(capacity){
+    console.log(capacity);
+    if (capacity <= 25){
+      return '#FFF080'
+    }
+    else if (capacity <= 50){
+      return '#F7C245'
+    }
+    else if (capacity <= 75){
+      return '#E58222'
+    }
+    else if (capacity <= 100){
+      return '#BA4410'
+    }
+    else{
+      return '#BA160D'
+    }
+
+  }
+
+
   function addCircle(center, radius, map){
     var circleOptions = {
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
       strokeWeight: 0,
-      fillColor: "#9E0508",
-      fillOpacity: 0.35,
+      fillOpacity: 0.50,
+      fillColor: fillColor,
       center: center,
       radius: radius
+
     };
     var circle = new google.maps.Circle(circleOptions);
     allCircles.push(circle);
     circle.setMap(map);
+  }
+
+  function capacityThrottle (capacity){
+    if (capacity >= 500){
+      return Math.pow(capacity,(4/10));
+    }
+    if (capacity < 500){
+      return Math.pow(capacity, (9/10))
+    }
   }
 
   function drawAllCircles(data, map){
@@ -81,12 +111,10 @@
         x = date - tmpend ;
         dif = new Date(1800000 - x);
       }
-
       center = new google.maps.LatLng(data.data[i].lat,data.data[i].lng);
-      radius = data.data[i].capacity * sigmoid(dif.getMinutes());
-
-      addCircle(center, radius, map);
-
+      radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif.getMinutes());
+      fillColor = colourScale(parseInt(radius));
+      addCircle(center, radius, map, fillColor);
     }
   }
 
