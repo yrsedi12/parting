@@ -42,6 +42,7 @@
     });
 
     $.getJSON("http://projectf-data.eu01.aws.af.cm/?callback=?", function ( data ) {
+      drawAllCircles(data, map);
       setInterval(function(){
         drawAllCircles(data, map);
       }, 3000);
@@ -132,6 +133,7 @@
       fillColor = colourScale(parseInt(radius));
       addCircle(center, radius, map, fillColor, i);
     }
+    
   }
 
   google.maps.event.addDomListener(window, 'load', initialize); 
