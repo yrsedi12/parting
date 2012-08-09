@@ -124,9 +124,11 @@
         x = date - tmpend;
         dif = moment(1800000 - x);
       }
+      
+      var dif_seconds = dif.minutes() + (dif.seconds() / 60)
 
       center = new google.maps.LatLng(data.data[i].lat,data.data[i].lng);
-      radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif.minutes());
+      radius = capacityThrottle(data.data[i].capacity) * sigmoid(dif_seconds);
       fillColor = colourScale(parseInt(radius));
       addCircle(center, radius, map, fillColor, i);
     }
